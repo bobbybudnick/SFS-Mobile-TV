@@ -26,6 +26,11 @@ channel change - swipe left and right
 volume change - swipe up and down  
 quit - X shape  
 
+design notes
+-----
+A pi 3 would be inappropriate here because of the huge draw of the screen and tv device.
+Also disassembling the tv device could allow for moving it closer in and reducing the overall length of the portable tv but I did not want to break the tv device or subject it to interference by disassembling it.
+
 notes on early 7" Waveshare screen
 -----
 touch requires special python driver  
