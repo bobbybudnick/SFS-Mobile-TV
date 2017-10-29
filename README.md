@@ -14,8 +14,8 @@ room for lithium polymer or convention lithium ion batteries
 
 software
 -----
-xfce
-easystroke
+xfce  
+easystroke  
 omxplayer
 
 gestures
