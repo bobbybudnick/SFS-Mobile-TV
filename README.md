@@ -2,6 +2,8 @@
 
 Portable TV
 
+https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_183557.JPG
+
 hardware
 -----
 7 inch screen in landscape mode  
