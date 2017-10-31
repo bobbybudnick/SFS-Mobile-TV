@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#simple tv scanner
+
+#notify
+(
+#scan
+NEW=$(w_scan -A1 -X -c US -fa)
+#this takes place in a subshell - convert to file to get it out
+printf "$NEW" > /run/shm/SCAN_RESULTS
+#for debugging -  this should have a different line than the channels file
+#NEW=$(cp /home/pi/TESTER /run/shm/SCAN_RESULTS)
+echo "100"
+echo "# Scan Complete"
+)| zenity --progress --pulsate --no-cancel --title="TEST1" --text="TEST2" --percentage=0
+
+#convert file back to variable
+NEW=$(cat /run/shm/SCAN_RESULTS)
+
+#show contents
+echo $NEW | zenity --text-info --title="Scan Results"
+
+#ask to add to channel list
+if zenity --question --text "Press yes to add channels and no to quit"
+then
+#add unique channels to list here
+ORIGINAL=$(cat /home/pi/.azap/channels.conf)
+#this does not work because it is a variable
+#echo $NEW >> $ORIGINAL
+#cannot forget the new line here - spacing is also important
+#this needed to be a new variable - not ORIGINAL
+COMBINED="$ORIGINAL\n$NEW"
+#printf "$COMBINED"
+SORTED=$(printf "$COMBINED" | sort | uniq )
+printf "$SORTED"
+#echo $SORTED > /home/pi/.azap/channels.conf
+#need to printf here to keep echo from screwing things up
+printf "$SORTED" > /home/pi/.azap/channels.conf
+fi
+
+#cleanup
+killall zenity
+

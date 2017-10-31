@@ -1,0 +1,16 @@
+## always audio
+dtparam=audio=on
+
+## maximum amps on usb ports
+max_usb_current=1
+hdmi_group=2
+hdmi_mode=87
+hdmi_cvt 800 480 60 6 0 0 0
+hdmi_drive=1
+#display_rotate=1
+#framebuffer_width=1280
+#framebuffer_height=768
+#for best decoding speed and quality
+gpu_mem=256
+#you can add up to 8 keys here in total
+decode_MPG2=0xc1fcef70

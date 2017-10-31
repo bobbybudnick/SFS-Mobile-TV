@@ -1,0 +1,6 @@
+#quit tv script here
+
+killall TV
+killall omxplayer.bin
+killall azap
+

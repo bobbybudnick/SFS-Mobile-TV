@@ -1,0 +1,1 @@
+sudo apt-get install xinput alsa-utils automake xinput-calibrator xdotool psmisc devilspie build-essential ntpdate dnsmasq matchbox-keyboard numptyphysics ltris pinball xfce4 smbclient leafpad xfce4-terminal python3-pip libudev-dev libssh-dev device-tree-compiler libboost-serialization-dev libgtkmm-2.4-dev w-scan dvb-apps zenity

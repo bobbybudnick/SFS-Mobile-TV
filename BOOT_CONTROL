@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BOOT_CHOICE=$(zenity --list --title="Choose your boot option" --column="Options" Shutdown Reboot)
+if [ "$BOOT_CHOICE" = "Shutdown" ]
+then
+sudo shutdown -h now
+fi
+if [ "$BOOT_CHOICE" = "Reboot" ]
+then
+sudo reboot
+fi

@@ -1,0 +1,96 @@
+#!/bin/bash
+
+#Simple TV
+
+PLAYER_COUNTER=5
+
+#cleanup
+echo 0 > /run/shm/CHANNEL_PREVIOUS
+echo 0 > /run/shm/CHANNEL_NEXT
+killall azap
+killall omxplayer.bin
+
+#set CHANNEL_NAME - start by reading first line
+CHANNEL_NAME=$(cat /home/pi/.azap/channels.conf | head -1 | tail -1 | cut -d ":" -f1)
+#start azap
+azap -r $CHANNEL_NAME >& /dev/null &
+#wait a few seconds
+sleep 5
+
+while true
+do
+
+#check for a channel up signal
+CHANNEL_NEXT=$(cat /run/shm/CHANNEL_NEXT)
+if [ "$CHANNEL_NEXT" -eq "1" ]
+then
+#reset channel change indicator by echoing 0 to it
+echo 0 > /run/shm/CHANNEL_NEXT
+#read CHANNEL_NAME line number
+CHANNEL_NUMBER=$(grep -n "$CHANNEL_NAME" /home/pi/.azap/channels.conf | cut -d ":" -f1)
+#add 1 to CURRENT_CHANNEL_NUMBER line number
+CHANNEL_NUMBER=$(($CHANNEL_NUMBER + 1))
+#determine number of lines in channels file
+CHANNEL_COUNT=$(cat /home/pi/.azap/channels.conf | wc -l)
+#if number is greater than total then set CHANNEL_NUMBER to first line number
+if [ $CHANNEL_NUMBER -gt $CHANNEL_COUNT ]
+then
+CHANNEL_NUMBER=1
+fi
+#convert CHANNEL_NUMBER to CHANNEL_NAME
+CHANNEL_NAME=$(cat /home/pi/.azap/channels.conf | head -$CHANNEL_NUMBER | tail -1 | cut -d ":" -f1)
+#change channel by killing azap and restarting
+zenity --notification --window-icon="info" --text "Answering Channel Change Next:$CHANNEL_NAME"&
+killall azap
+killall omxplayer.bin
+azap -r $CHANNEL_NAME >& /dev/null &
+sleep 5
+/home/pi/omxplayer/omxplayer /dev/dvb/adapter0/dvr0&
+fi
+
+#check for a channel down signal
+CHANNEL_PREVIOUS=$(cat /run/shm/CHANNEL_PREVIOUS)
+if [ "$CHANNEL_PREVIOUS" -eq "1" ]
+then
+#reset channel change indicator by echoing 0 to it
+echo 0 > /run/shm/CHANNEL_PREVIOUS
+#read CHANNEL_NAME line number
+CHANNEL_NUMBER=$(grep -n "$CHANNEL_NAME" /home/pi/.azap/channels.conf | cut -d ":" -f1)
+#subtract 1 from CURRENT_CHANNEL_NUMBER line number
+CHANNEL_NUMBER=$(($CHANNEL_NUMBER - 1))
+#if number is 0 or less then set CHANNEL_NUMBER to last line number
+if [ $CHANNEL_NUMBER -le 0 ]
+then
+CHANNEL_NUMBER=$(grep -n "" /home/pi/.azap/channels.conf | tail -n1 | cut -d ":" -f1)
+fi
+#convert CHANNEL_NUMBER to CHANNEL_NAME
+CHANNEL_NAME=$(cat /home/pi/.azap/channels.conf | head -$CHANNEL_NUMBER | tail -1 | cut -d ":" -f1)
+#change channel by killing azap and restarting
+zenity --notification --window-icon="info" --text "Answering Channel Change Previous:$CHANNEL_NAME"&
+killall azap
+killall omxplayer.bin
+azap -r $CHANNEL_NAME >& /dev/null &
+sleep 5
+/home/pi/omxplayer/omxplayer /dev/dvb/adapter0/dvr0&
+fi
+
+#check if omxplayer is still running
+if [ "$PLAYER_COUNTER" -gt 5 ]
+then
+PLAYER_COUNTER=0
+if ! ps -C omxplayer
+then
+#start or restart omxplayer
+zenity --notification --window-icon="info" --text "Starting omxplayer"&
+/home/pi/omxplayer/omxplayer /dev/dvb/adapter0/dvr0&
+else
+killall zenity
+zenity --notification --window-icon="info" --text "Tuned to:$CHANNEL_NAME - Check signal if no video!"&
+fi
+fi
+
+PLAYER_COUNTER=$(($PLAYER_COUNTER+1))
+sleep 1
+
+done
+
