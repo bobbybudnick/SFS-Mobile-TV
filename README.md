@@ -2,8 +2,7 @@
 
 Portable TV
 
-![](https://github.com/bobbybudnick/SFS-Mobile-Internet-Device/blob/master/WIN_20171002_110418.JPG)
-https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_183557.JPG
+![](https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_183557.JPG)
 
 hardware
 -----
@@ -15,16 +14,22 @@ hauppauge WinTV-HVR-950Q
 usb twist extension for tv device  
 room for lithium polymer or convention lithium ion batteries
 
+![](https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_183121.JPG)
+
 software
 -----
 xfce  
 easystroke  
 omxplayer
 
+![](https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_183337.JPG)
+
 design notes
 -----
 A pi 3 would be inappropriate here because of the huge draw of the screen and tv device.
 Also disassembling the tv device could allow for moving it closer in and reducing the overall length of the portable tv but I did not want to break the tv device or subject it to interference by disassembling it.
+
+![](https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_183752.JPG)
 
 gestures
 -----
@@ -33,6 +38,8 @@ skip - counterclockwise and clockwise
 channel change - swipe left and right  
 volume change - swipe up and down  
 quit - X shape
+
+![](https://github.com/bobbybudnick/SFS-Mobile-TV/blob/master/WIN_20171031_185338.JPG)
 
 notes on early 7" Waveshare screen
 -----
